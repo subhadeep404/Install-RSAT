@@ -1,4 +1,4 @@
-﻿# Requires: RunAsAdministrator
+﻿# Requires: Elevated PowerShell Window
 # Script to automate the installation of RSAT (Remote Server Adminisration Tools) for Remote Server Admiistration.
 
 [CmdletBinding()]
@@ -29,24 +29,26 @@ Param(
 
 $hostname = $env:COMPUTERNAME
 
+# Function to check the host system for installed RSAT
 function Get-RSATStatus {
     Write-Host -ForegroundColor Green "[+] RSAT Tools Status:" 
     Get-WindowsCapability -Online -Name "Rsat.*" | Select-Object @{Name="Tool Name"; Expression={$_.DisplayName}}, @{Name="Status"; Expression={$_.State}}
 }
 
-# Check if the command was passed with no arguments
+# If the user executes the script with o arguments display execution format
 if ($PSBoundParameters.Count -eq 0) {
     Write-Host -ForegroundColor Red "[!] No Flags were Selected"
     Write-Host -ForegroundColor Gray "[!] Install-RSAT -ADDS -DNS <...>`n"
     return
 }
 
+# Allows the user to check if RSAT is already installed
 if ($PSBoundParameters.ContainsKey("Status")) {
     Get-RSATStatus
     return
 }
 
-# RSAT tool names with their installation attributes
+# RSAT tool names with installation distribution
 $ToolsToInstall = @{
     "ADDS"="Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0";            
     "Bitlocker"="Rsat.BitLocker.Recovery.Tools~~~~0.0.1.0";
