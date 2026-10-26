@@ -1,6 +1,7 @@
 ﻿# Requires: Elevated PowerShell Window
-# Script to automate the installation of RSAT (Remote Server Adminisration Tools) for Remote Server Admiistration.
+# Script to automate the installation of RSAT (Remote Server Adminisration Tools) for Remote Server Administration.
 
+# Use flags for selecting the tool to be installed
 [CmdletBinding()]
 Param(
     [switch]$Status,
